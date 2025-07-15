@@ -70,5 +70,6 @@ fun MainTopBar(
 
 @Composable
 fun ArtGalleryApp(navController: NavHostController = rememberNavController(), modifier: Modifier = Modifier){
+
     NavigationHost(navController)
 }

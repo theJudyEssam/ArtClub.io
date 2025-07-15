@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 
 // todo: this is will be the Art Piece Model
+
+@Serializable
 data class ArtPiece (
     val id: Int,
     val title: String,
@@ -13,9 +15,7 @@ data class ArtPiece (
     val creationDate: String? = null,
 
     val tombstone: String? = null,
-
-    val url: String, // artwork's page on Cleveland's website
-
+    val url: String, // link to CMA
     val images: ImageVariants? = null
 )
 

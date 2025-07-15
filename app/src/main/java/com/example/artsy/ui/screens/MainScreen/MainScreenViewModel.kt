@@ -1,4 +1,5 @@
 package com.example.artsy.ui.screens.MainScreen
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -26,7 +27,7 @@ sealed interface ArtUiState {
 
 class MainScreenViewModel(private val ArtRepository: ArtRepository) : ViewModel() {
 
-    private var artUiState: ArtUiState by mutableStateOf(ArtUiState.Loading)
+     var artUiState: ArtUiState by mutableStateOf(ArtUiState.Loading)
         private set
 
 
@@ -44,6 +45,8 @@ class MainScreenViewModel(private val ArtRepository: ArtRepository) : ViewModel(
         } catch (e: HttpException) {
             ArtUiState.Error
         }
+
+        Log.d("API check", artUiState.toString())
     }
     }
 

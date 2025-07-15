@@ -18,11 +18,12 @@ interface AppContainer{
 
 class defaultAppContainer: AppContainer {
 
-
     private val baseURL = "https://openaccess-api.clevelandart.org/api/"
-
+    val json = Json {
+        ignoreUnknownKeys = true // helps avoid crash on extra fields
+    }
     private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseURL)
         .build()
 
