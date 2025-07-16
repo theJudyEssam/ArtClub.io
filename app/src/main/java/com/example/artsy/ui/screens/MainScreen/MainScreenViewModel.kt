@@ -51,7 +51,6 @@ class MainScreenViewModel(private val ArtRepository: ArtRepository) : ViewModel(
     }
 
 
-
     companion object{
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

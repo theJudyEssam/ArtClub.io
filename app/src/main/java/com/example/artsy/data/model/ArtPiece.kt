@@ -8,14 +8,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ArtPiece (
-    val id: Int,
-    val title: String,
-
+    val id: Int = 0,
+    val title: String? = null,
     @SerialName("creation_date")
     val creationDate: String? = null,
-
+    val description:String? = null,
     val tombstone: String? = null,
-    val url: String, // link to CMA
+    val url: String? = null, // link to CMA
     val images: ImageVariants? = null
 )
 

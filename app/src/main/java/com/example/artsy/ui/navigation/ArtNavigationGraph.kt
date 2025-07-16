@@ -5,7 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.artsy.ui.screens.ArtScreen.ArtScreen
+import com.example.artsy.ui.screens.ArtScreen.ArtScreenDestination
 import com.example.artsy.ui.screens.FavouritesScreen.FavouritesScreen
 import com.example.artsy.ui.screens.FavouritesScreen.FavouritesScreenDestination
 import com.example.artsy.ui.screens.HomeScreen.HomeScreen
@@ -36,7 +40,9 @@ fun NavigationHost(
 //                navigateback = {navController.popBackStack()},
                 onNavigateUp = { navController.navigateUp() },
                 title = MainScreenDestination.title,
-                toFavourites = {navController.navigate(FavouritesScreenDestination.route)}
+                toFavourites = {navController.navigate(FavouritesScreenDestination.route)},
+                navController = navController
+
             )
         }
 
@@ -46,6 +52,14 @@ fun NavigationHost(
                 OnNavigateUp = {navController.navigateUp()}
             )
         }
+
+        composable(route = ArtScreenDestination.routeWithArgs,
+                   arguments = listOf(navArgument("itemId"){type = NavType.IntType}))
+        {
+            val itemId = it.arguments?.getInt("itemId")?: -1
+            ArtScreen(itemId, onNavigateUp = {navController.navigateUp()})
+        }
+
 
 
     }

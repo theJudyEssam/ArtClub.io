@@ -1,6 +1,7 @@
 package com.example.artsy.ui.screens.MainScreen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -29,12 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.artsy.R
 import com.example.artsy.data.model.ArtPiece
 import com.example.artsy.ui.MainTopBar
 import com.example.artsy.ui.navigation.NavDest
+import com.example.artsy.ui.screens.ArtScreen.ArtScreenDestination
 import com.example.artsy.ui.screens.Components.ErrorScreen
 import com.example.artsy.ui.screens.Components.LoadingScreen
 import com.example.compose.ArtsyTheme
@@ -57,7 +60,8 @@ fun MainScreen(
     onNavigateUp: () -> Unit,
     title: String = "ArtClub",
     favouritesButton:Boolean = true,
-    toFavourites: () -> Unit
+    toFavourites: () -> Unit,
+    navController: NavController
 ){
 
     val mainScreenViewModel: MainScreenViewModel = viewModel(factory = MainScreenViewModel.Factory)
@@ -75,7 +79,8 @@ fun MainScreen(
             when(mainScreenUIstate){
             is ArtUiState.Loading -> { LoadingScreen() }
             is ArtUiState.Success -> {ArtGrid(
-                photos =  mainScreenUIstate.photos
+                photos =  mainScreenUIstate.photos,
+                navController
             )}
             is ArtUiState.Error -> {ErrorScreen()}
             }
@@ -87,7 +92,8 @@ fun MainScreen(
 
 @Composable
 fun ArtGrid(
-    photos: List<ArtPiece>
+    photos: List<ArtPiece>,
+    navController: NavController
 ){
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
@@ -100,6 +106,10 @@ fun ArtGrid(
                     .padding(4.dp)
                     .fillMaxWidth()
                     .aspectRatio(1.5f)
+                    .clickable(
+                        onClick = {navController.navigate("${ArtScreenDestination.route}/${photo.id}")}
+                    )
+
             )
         }
     }
