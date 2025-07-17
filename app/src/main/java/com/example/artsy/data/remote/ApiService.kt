@@ -4,24 +4,20 @@ import retrofit2.http.GET
 import kotlinx.serialization.Serializable
 import retrofit2.http.Path
 
-// this is where i shall be defining the API service
 
-
+// Wrappers for the API, since the responses are nested in "data"
 @Serializable
-data class ArtworkResponse( // this is a wrapper
+data class ArtworkResponse(
     val data: List<ArtPiece>
 )
-
-
 @Serializable
 data class ArtPieceResponse(
     val data: ArtPiece
 )
 
-interface ApiService {
+interface ApiService { // the API service
     @GET("artworks")
     suspend fun getArtwork(): ArtworkResponse
-
 
     @GET("artworks/{id}")
     suspend fun getArtworkbyId(@Path("id") id: Int): ArtPieceResponse

@@ -11,23 +11,22 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.artsy.ArtApplication
 import com.example.artsy.data.model.ArtPiece
-import com.example.artsy.data.repository.ArtRepository
+import com.example.artsy.data.repository.NetworkArtRepository
 import kotlinx.coroutines.launch
-import okhttp3.Call
 import retrofit2.HttpException
 import java.io.IOException
 
 
-sealed interface ArtUiState {
-    data class Success(val photos: List<ArtPiece>) : ArtUiState
-    object Error : ArtUiState
-    object Loading : ArtUiState
+sealed interface MainArtUiState {
+    data class Success(val photos: List<ArtPiece>) : MainArtUiState
+    object Error : MainArtUiState
+    object Loading : MainArtUiState
 }
 
 
-class MainScreenViewModel(private val ArtRepository: ArtRepository) : ViewModel() {
+class MainScreenViewModel(private val ArtRepository: NetworkArtRepository) : ViewModel() {
 
-     var artUiState: ArtUiState by mutableStateOf(ArtUiState.Loading)
+     var artUiState: MainArtUiState by mutableStateOf(MainArtUiState.Loading)
         private set
 
 
@@ -37,13 +36,13 @@ class MainScreenViewModel(private val ArtRepository: ArtRepository) : ViewModel(
 
     fun getArtWorks(){
     viewModelScope.launch {
-        artUiState = ArtUiState.Loading
+        artUiState = MainArtUiState.Loading
         artUiState = try{
-            ArtUiState.Success(ArtRepository.getArtworks())
+            MainArtUiState.Success(ArtRepository.getArtworks())
         } catch (e: IOException) {
-            ArtUiState.Error
+            MainArtUiState.Error
         } catch (e: HttpException) {
-            ArtUiState.Error
+            MainArtUiState.Error
         }
 
         Log.d("API check", artUiState.toString())
@@ -55,7 +54,7 @@ class MainScreenViewModel(private val ArtRepository: ArtRepository) : ViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as ArtApplication)
-                val artRepository = application.container.artRepository
+                val artRepository = application.container.NetworkartRepository
                 MainScreenViewModel(ArtRepository = artRepository)
             }
         }

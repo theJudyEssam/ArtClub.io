@@ -1,13 +1,16 @@
 package com.example.artsy.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
-// todo: this is will be the Art Piece Model
 
+@Entity(tableName = "Favourites")
 @Serializable
 data class ArtPiece (
+    @PrimaryKey
     val id: Int = 0,
     val title: String? = null,
     @SerialName("creation_date")

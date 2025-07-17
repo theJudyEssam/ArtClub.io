@@ -27,37 +27,42 @@ fun NavigationHost(
     NavHost(
         navController = navController,
         startDestination = HomeScreenDestination.route,
-        modifier = Modifier
+        modifier = modifier
     ){
 
+        // Home Screen
         composable(route = HomeScreenDestination.route) {
             HomeScreen(
             navigateToEntry = {navController.navigate(MainScreenDestination.route)})
         }
 
+        // Main Screen --> Shows Artworks
         composable(route = MainScreenDestination.route){
             MainScreen(
-//                navigateback = {navController.popBackStack()},
                 onNavigateUp = { navController.navigateUp() },
                 title = MainScreenDestination.title,
                 toFavourites = {navController.navigate(FavouritesScreenDestination.route)},
                 navController = navController
-
             )
         }
 
+        // Favourites Screen --> User Favourites
         composable(route = FavouritesScreenDestination.route){
             FavouritesScreen(
                 title = FavouritesScreenDestination.title,
-                OnNavigateUp = {navController.navigateUp()}
+                OnNavigateUp = {navController.navigateUp()},
+                navController = navController
             )
         }
 
+        // Art Details Screen
         composable(route = ArtScreenDestination.routeWithArgs,
                    arguments = listOf(navArgument("itemId"){type = NavType.IntType}))
         {
             val itemId = it.arguments?.getInt("itemId")?: -1
-            ArtScreen(itemId, onNavigateUp = {navController.navigateUp()})
+            ArtScreen(
+                itemId,
+                onNavigateUp = {navController.navigateUp()})
         }
 
 

@@ -13,15 +13,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import com.example.artsy.ui.MainTopBar
 import com.example.artsy.ui.navigation.NavDest
 import com.example.artsy.ui.screens.Components.ErrorScreen
 import com.example.artsy.ui.screens.Components.LoadingScreen
+import com.example.artsy.ui.screens.MainScreen.ArtGrid
 import com.example.artsy.ui.theme.Heart
 import com.example.compose.ArtsyTheme
 
@@ -41,7 +46,12 @@ fun FavouritesScreen(
     modifier: Modifier = Modifier,
     title:String = "Favourites",
     OnNavigateUp: ()-> Unit,
-    canNavigateBack: Boolean = true){
+    canNavigateBack: Boolean = true,
+    favouritesViewModel: FavouritesViewModel = viewModel(factory = FavouritesViewModel.Factory),
+    navController: NavController
+){
+    var favouritesUIState = favouritesViewModel.favouritesUIState.collectAsState()
+
     Scaffold(
         topBar = {MainTopBar(
             title = title,
@@ -52,10 +62,18 @@ fun FavouritesScreen(
     )
     { innerPadding ->
         Card(modifier.padding(innerPadding)){
-            EmptyFavouritesScreen()
+            ArtGrid(
+                photos = favouritesUIState.value.artList,
+                navController = navController
+            )
+//            EmptyFavouritesScreen()
         }
     }
 }
+
+
+
+
 
 
 @Composable
